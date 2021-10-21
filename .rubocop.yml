@@ -1,0 +1,22 @@
+Documentation:
+  Enabled: false
+Style/AsciiComments:
+  Enabled: false
+Style/StringLiterals:
+  Enabled: false
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    default: '[]'
+    '%i':    '()'
+    '%w':    '()'
+Metrics/BlockLength:
+  Exclude:
+    - 'Rakefile'
+    - '**/*.rake'
+    - 'spec/**/*_spec.rb'
+    - 'config/routes.rb'
+Metrics/LineLength:
+  Enabled: true
+  Max: 100
+Style/TrailingCommaInLiteral:
+  Enabled: false
