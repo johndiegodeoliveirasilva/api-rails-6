@@ -1,4 +1,6 @@
 class Order < ApplicationRecord
+  before_validation :set_total!
+
   has_many :placements, dependent: :destroy
   has_many :products, through: :placements
 
@@ -7,6 +9,8 @@ class Order < ApplicationRecord
   validates :total, numericality: { greater_than_or_equal_to: 0 }
   validates :total, presence: true
 
-  
 
+  def set_total!
+    self.total = products.sum(&:price).to_f
+  end
 end
