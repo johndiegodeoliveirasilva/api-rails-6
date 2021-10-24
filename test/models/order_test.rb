@@ -17,9 +17,5 @@ class OrderTest < ActiveSupport::TestCase
     order.total
   end
 
-  test 'Should have a positive total' do
-    order = orders(:one)
-    order.total = -1
-    assert_not order.valid?
-  end
+
 end
