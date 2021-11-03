@@ -19,14 +19,18 @@ class Api::V1::OrdersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should show orders' do
-    get api_v1_order_url(@order),
+    get api_v1_orders_url,
       headers: { Authorization: JsonWebToken.encode(user_id: @order.user_id) },
       as: :json
     assert_response :success
 
-    json_response = JSON.parse(response.body)
-    include_product_attr = json_response['included'][0]['attributes']
-    assert_equal @order.products.first.title, include_product_attr['title']
+    json_response = JSON.parse(response.body, symbolize_names: true)
+    assert_equal @order.user.orders.count, json_response[:data].count
+
+    assert_not_nil json_response.dig(:links, :first)
+    assert_not_nil json_response.dig(:links, :last)
+    assert_not_nil json_response.dig(:links, :prev)
+    assert_not_nil json_response.dig(:links, :next)
   end
 
   test 'should forbid created order for unlogged' do
