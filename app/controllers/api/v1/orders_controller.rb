@@ -1,7 +1,16 @@
 class Api::V1::OrdersController < ApplicationController
   before_action :check_login, only: %i[index show create]
   def index
-    render json: OrderSerializer.new(current_user.orders).serializable_hash
+    @pagy, @orders = pagy(current_user.orders, items: 10)
+    options = {
+      links: {
+        first: api_v1_orders_path(page: 1),
+        last: api_v1_orders_path(page: @pagy.count),
+        prev: api_v1_orders_path(page: @pagy.prev),
+        next: api_v1_orders_path(page: @pagy.next),
+      }
+    }
+    render json: OrderSerializer.new(@orders, options).serializable_hash
   end
 
   def show
