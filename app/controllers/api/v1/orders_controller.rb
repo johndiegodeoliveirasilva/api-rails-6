@@ -1,15 +1,11 @@
 class Api::V1::OrdersController < ApplicationController
+  include Paginable
   before_action :check_login, only: %i[index show create]
+
   def index
-    @pagy, @orders = pagy(current_user.orders, items: 10)
-    options = {
-      links: {
-        first: api_v1_orders_path(page: 1),
-        last: api_v1_orders_path(page: @pagy.count),
-        prev: api_v1_orders_path(page: @pagy.prev),
-        next: api_v1_orders_path(page: @pagy.next),
-      }
-    }
+    @pagy, @orders = pagy(current_user.orders, items: per_page, page: current_page)
+
+    options = get_links_serializer_options('api_v1_orders_path', @pagy)
     render json: OrderSerializer.new(@orders, options).serializable_hash
   end
 
