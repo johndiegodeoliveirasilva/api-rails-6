@@ -51,3 +51,5 @@ gem "faker", "~> 2.19"
 gem "fast_jsonapi", "~> 1.5"
 
 gem "pagy", "~> 5.1"
+
+gem "bullet", "~> 6.1", :group => :development

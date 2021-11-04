@@ -10,8 +10,9 @@ class Api::V1::ProductsController < ApplicationController
   end
 
   def index
-    @pagy, @products = pagy(Product.search(params), items: per_page, page: current_page)
+    @pagy, @products = pagy(Product.includes(:user).search(params), items: per_page, page: current_page)
     options = get_links_serializer_options('api_v1_products_path', @pagy)
+    options[:include] = [:user]
     render json: ProductSerializer.new(@products, options).serializable_hash
   end
 
